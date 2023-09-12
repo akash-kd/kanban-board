@@ -1,7 +1,9 @@
 .header{
     width: 100%;
     height: 80px;
-    background-color: white;
+    min-height: 80px;
+    background-color: #a7b6c6;
+    border-bottom: 1px solid #77869d;
     display: flex;
     align-items: center;
 }
@@ -18,12 +20,19 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    color: #64748b;
+    color: #222b3c;
     padding-left: 20px;
     padding-right: 20px;
 }
 
+.group-button:hover{
+    filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+    border: 2px solid #465365;
+}
+
 .header-body{
+    z-index: 10;
+    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.05));
     height: 100px;
     width: 330px;
     display: flex;
@@ -35,7 +44,7 @@
     left: 50px;
     border: 1px solid #d8e0e9;
     border-radius: 8px;
-    background-color: #f4f5f8;
+    background-color: white;
     padding: 20px;
 }
 .group-item{
@@ -46,6 +55,7 @@
     height: 30px;
 }
 .group-select{
+    width: 150px;
     height: 30px;
     border: 1px solid #d8e0e9;
     filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.05));

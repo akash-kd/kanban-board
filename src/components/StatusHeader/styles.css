@@ -1,0 +1,19 @@
+.status-header {
+    width: 100%;
+    max-height: min-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-main{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-icons{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

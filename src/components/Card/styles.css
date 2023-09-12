@@ -1,5 +1,4 @@
 .card-main{
-    height: 110px;
     width: 360px;
     filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.05));
     background-color: white;
@@ -12,15 +11,43 @@
     justify-content: space-between;
     align-items: center;
     color: #6a6e75;
+    text-transform: uppercase;
 }
 
 .card-content{
     color: #282a30;
+    margin-top: 10px;
+}
+
+.card-footer{
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.card-footer > svg{
+    height: 20px;
+    width: 20px;
 }
 
 .avatar{
-    height: 30px;
-    width: 30px;
+    height: 42px;
+    width: 42px;
     border-radius: 9999px;
     background-color: #000;
+}
+
+
+.feature{
+    width: max-content;
+    height: 18px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-radius: 8px;
+    border: 1px solid #d8e0e9;
 }

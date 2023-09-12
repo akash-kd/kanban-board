@@ -18,25 +18,23 @@ export default function App() {
 	)
 	console.log(JSON.parse(localStorage.getItem('state')))
 	useEffect(() => {
-		fetch('https://api.quicksell.co/v1/internal/frontend-assignment')
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error('Network response was not ok')
-				}
-				console.log('FETCh', response.json())
-				return response.json() // Parse the response body as JSON
-			})
-			.then((data) => {
-				// Handle the data here
-				console.log('FETCh', data)
-				setData(data)
-			})
-			.catch((error) => {
-				// Handle errors here
-				console.error('Fetch error:', error)
-			})
+		async function fetchData() {
+			const res = await fetch(
+				'https://api.quicksell.co/v1/internal/frontend-assignment',
+			)
+
+			res.json()
+				.then((res) => { 
+					console.log("data", res);
+					setData(res);
+				})
+				.catch((err) => alert('Something Went Wrong'))
+
+		}
+
+		fetchData()
 	}, [])
-	console.log('DATA', data)
+
 	return (
 		<div className='main'>
 			<Header state={state} setState={setState} />

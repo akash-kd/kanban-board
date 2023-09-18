@@ -12,7 +12,7 @@
 .main-col {
 	margin: 30px;
 	min-width: 400px;
-	height: max-content;
+	height: 100%;
 	width: 400px;
 	padding-top: 16px;
 	padding-bottom: 16px;

@@ -1,52 +1,87 @@
-import Header from './components/Header/Header.jsx'
-import MainView from './views/main.jsx'
-import UserView from './views/user.jsx'
-import PriorityView from './views/priority.jsx'
-import { useEffect, useState } from 'react'
-import Card from './components/Card/Card.jsx'
+import './styles/index.css'
+import { useState } from 'react'
 
-export default function App() {
-	const [data, setData] = useState({
-		tickets: [],
-		users: [],
-	})
-	const [state, setState] = useState(
-		JSON.parse(localStorage.getItem('state')) || {
-			grouping: 'default',
-			ordering: 'default',
-		},
-	)
-	console.log(JSON.parse(localStorage.getItem('state')))
-	useEffect(() => {
-		async function fetchData() {
-			const res = await fetch(
-				'https://api.quicksell.co/v1/internal/frontend-assignment',
-			)
+function Card() {
+	const [isDragging, setIsDragging] = useState(false)
 
-			res.json()
-				.then((res) => { 
-					console.log("data", res);
-					setData(res);
-				})
-				.catch((err) => alert('Something Went Wrong'))
+	function handleDragStart(e) {
+		setIsDragging(true)
+		const data = JSON.stringify({ type: 'card' })
+		e.dataTransfer.setData('text/plain', data)
+	}
 
-		}
-
-		fetchData()
-	}, [])
+	function handleDragEnd(e) {
+		setIsDragging(false)
+		e.dataTransfer.clearData()
+	}
 
 	return (
-		<div className='main'>
-			<Header state={state} setState={setState} />
-			<div className='main-content'>
-				{state.grouping === 'default' ? (
-					<MainView data={data} state={state} />
-				) : state.grouping === 'user' ? (
-					<UserView data={data} state={state} />
-				) : (
-					<PriorityView data={data} state={state} />
-				)}
-			</div>
+		<div
+			className='card'
+			style={{
+				backgroundColor: isDragging ? '#fbb' : 'palegoldenrod',
+			}}
+			draggable
+			onDragStart={handleDragStart}
+			onDragEnd={handleDragEnd}
+		>
+			Card
+		</div>
+	)
+}
+
+function Box({ card, moveCard }) {
+	const [isOver, setIsOver] = useState(false)
+
+	function handleDragOver(e) {
+		if (e.dataTransfer.types[0] === 'text/plain') {
+			setIsOver(true)
+			e.preventDefault()
+		}
+	}
+
+	function handleDrop(e) {
+		const dataJSON = e.dataTransfer.getData('text/plain')
+		let data
+		try {
+			data = JSON.parse(dataJSON)
+		} catch {}
+		if (data && data.type === 'card') {
+			moveCard()
+		}
+	}
+
+	function handleDragLeave() {
+		setIsOver(false)
+	}
+
+	return (
+		<div
+			className='box'
+			style={{ backgroundColor: isOver ? '#bbf' : 'rgba(0,0,0,.12)' }}
+			onDragOver={handleDragOver}
+			onDrop={handleDrop}
+			onDragLeave={handleDragLeave}
+		>
+			{card ? <Card /> : 'Box'}
+		</div>
+	)
+}
+
+export default function App() {
+	const [index, setIndex] = useState(3)
+
+	function moveCard(i) {
+		setIndex(i)
+	}
+
+	return (
+		<div className='app'>
+			<Box card={index === 1} moveCard={moveCard.bind(null, 1)}></Box>
+			<Box card={index === 2} moveCard={moveCard.bind(null, 2)}></Box>
+			<Box card={index === 3} moveCard={moveCard.bind(null, 3)}></Box>
+			<Box card={index === 4} moveCard={moveCard.bind(null, 4)}></Box>
+			<Box card={index === 5} moveCard={moveCard.bind(null, 5)}></Box>
 		</div>
 	)
 }

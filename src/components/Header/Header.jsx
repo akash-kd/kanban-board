@@ -17,7 +17,7 @@ export default function Header({ state, setState }) {
 				Display
 				<DownArrow />
 			</button>
-			- One these work, 1 move to 4. refresh again 4 to 1 now.
+			- 1) Go to Display ->  Change Group by to: "Status", Works Limitedly, try moving 1 to 4. refresh again 4 to 1 now.
 			{isOpen ? (
 				<div className='header-body'>
 					<div className='group-item'>

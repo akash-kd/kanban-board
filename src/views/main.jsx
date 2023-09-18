@@ -1,7 +1,9 @@
 import './styles.css'
 import StatusHeader from '../components/StatusHeader/statusheader'
 import Card from '../components/Card/Card'
-export default function MainView({ data, state }) {
+import { useState } from 'react'
+
+export default function MainView({ data, state, card, moveCard }) {
 	let inprogress = []
 	let todo = []
 	let backlog = []
@@ -15,7 +17,7 @@ export default function MainView({ data, state }) {
 		else if (elem.status === 'Complete') done.push(elem)
 		else if (elem.status === 'Cancelled') none.push(elem)
 	})
-	
+
 	if (state.ordering === 'default') {
 		inprogress = inprogress.slice().sort((a, b) => b.priority - a.priority)
 		todo = todo.slice().sort((a, b) => b.priority - a.priority)
@@ -71,7 +73,6 @@ export default function MainView({ data, state }) {
 			return 0
 		})
 
-
 		none = none.slice().sort((a, b) => {
 			const nameA = a.title.toLowerCase()
 			const nameB = b.title.toLowerCase()
@@ -97,61 +98,66 @@ export default function MainView({ data, state }) {
 		})
 	}
 
+	const [s, setS] = useState({ a: [1], b: [4] })
+
+	const [to, setTo] = useState()
+
+	function handleDragOverA(e) {
+		if (e.dataTransfer.types[0] === 'text/plain') {
+			setTo('a')
+			e.preventDefault()
+		}
+	}
+	function handleDragOverB(e) {
+		if (e.dataTransfer.types[0] === 'text/plain') {
+			setTo('b')
+			e.preventDefault()
+		}
+	}
+
+	function handleDrop(e) {
+		const dataJSON = e.dataTransfer.getData('text/plain')
+		let data
+		try {
+			data = JSON.parse(dataJSON)
+		} catch {}
+		if (data && data.type === 'card') {
+			console.log('PLease Work', data.from, to)
+			move(data.from, to)
+		}
+	}
+
+	function move(from, to) {
+		if (from == 'a' && to == 'b') {
+			setS({ a: [], b: [4,1] })
+		}
+		if (from == 'b' && to == 'a') {
+			setS({ a: [4,1], b: [] })
+		}
+	}
+
+	console.log(s)
 	return (
 		<div className='main-view'>
-			<div className='main-col first'>
+			<div
+				className='main-col first'
+				onDragOver={handleDragOverA}
+				onDrop={handleDrop}
+			>
 				<StatusHeader type='backlog' />
-				{backlog.map((elem) => (
-					<Card
-						title={elem.title}
-						id={elem.id}
-						user_id={elem.userId}
-						priority={elem.priority}
-					/>
+				{s.a.map((item) => (
+					<Card title={item} id={item} from={'a'} />
 				))}
 			</div>
-			<div className='main-col'>
-				<StatusHeader type='todo' />
-				{inprogress.map((elem) => (
-					<Card
-						title={elem.title}
-						id={elem.id}
-						user_id={elem.userId}
-						priority={elem.priority}
-					/>
-				))}
-			</div>
-			<div className='main-col'>
-				<StatusHeader type='inprogress' />
-				{inprogress.map((elem) => (
-					<Card
-						title={elem.title}
-						id={elem.id}
-						user_id={elem.userId}
-						priority={elem.priority}
-					/>
-				))}
-			</div>
-			<div className='main-col'>
-				<StatusHeader type='done' />
-				{done.map((elem) => (
-					<Card
-						title={elem.title}
-						id={elem.id}
-						user_id={elem.userId}
-						priority={elem.priority}
-					/>
-				))}
-			</div>
-			<div className='main-col'>
-				<StatusHeader type='none' />
-				{none.map((elem) => (
-					<Card
-						title={elem.title}
-						id={elem.id}
-						user_id={elem.userId}
-						priority={elem.priority}
-					/>
+			<div
+				className='main-col first'
+				onDragOver={handleDragOverB}
+				onDrop={handleDrop}
+			>
+				<StatusHeader type='backlog' />
+
+				{s.b.map((item) => (
+					<Card title={item} id={item} from={'b'} />
 				))}
 			</div>
 		</div>
